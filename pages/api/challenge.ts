@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
 
     // 返回响应以文本形式
-  res.status(200).send(challenge)
+  res.status(200).json({ challenge })
   // if (req.method === 'POST') {
   //   // 获取POST请求中的参数
   //   const { CHALLENGE } = req.body
