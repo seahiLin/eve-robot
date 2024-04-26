@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useEffect } from "react";
@@ -114,3 +114,30 @@ export default function Home() {
     </main>
   );
 }
+
+const a = {
+  schema: "2.0",
+  header: {
+    event_id: "81a05723c626e54dbcc274f26273ff3b",
+    token: "gGkIcMMtLccma7gNtaHYKkjXF1mBaVjD",
+    create_time: "1714114729924815",
+    event_type: "card.action.trigger",
+    tenant_key: "1172885e3e4f975d",
+    app_id: "cli_a57820d23a10d00d",
+  },
+  event: {
+    operator: {
+      tenant_key: "1172885e3e4f975d",
+      user_id: "515e4a6b",
+      open_id: "ou_c1f7e18035bef54ff92792b6b9dc2c9f",
+      union_id: "on_232001dbcb30eb6cf7f168a6299f7e3f",
+    },
+    token: "c-8129f6a2ef2f7993907bb82cf0b318bd1ff5cfcd",
+    action: { value: [Object], tag: "button" },
+    host: "im_message",
+    context: {
+      open_message_id: "om_31df717fe455fe516f92588514362624",
+      open_chat_id: "oc_fc79b392e1701ae10c3c1f235225f323",
+    },
+  },
+};
