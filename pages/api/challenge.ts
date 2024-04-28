@@ -13,13 +13,15 @@ export default async function handler(
     return;
   } else if (header.event_type === "card.action.trigger") {
     const { value } = event.action
-    console.log(value, 'value')
+    
+
+    
     res.status(200).json({
       toast: {
         type: "success",
-        content: "创建成功",
+        content: "创建1成功",
         i18n: {
-          zh_cn: "创建成功",
+          zh_cn: "创建1成功",
           en_us: "Created successfully",
         },
       },
