@@ -19,6 +19,8 @@ export default async function handler(
       assignee: { email },
     } = JSON.parse(value);
 
+    console.log(summary, description, email, "value change")
+
     await jira.addNewIssue({
       fields: {
         project: {
@@ -33,7 +35,7 @@ export default async function handler(
           name: "Task",
         },
       },
-    });
+    })
 
     res.status(200).json({
       toast: {
