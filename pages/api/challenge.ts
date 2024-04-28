@@ -19,19 +19,33 @@ export default async function handler(
       assignee: { email },
     } = JSON.parse(decodeURIComponent(value));
 
-    console.log(summary, description, email, "value change")
+    console.log(summary, description, email, "value change");
 
     res.status(200).json({
-      toast: {
-        type: "success",
-        content: "创建1成功",
-        i18n: {
-          zh_cn: "创建1成功",
-          en_us: "Created successfully",
+      card: {
+        type: "raw",
+        data: {
+          elements: [
+            {
+              tag: "div",
+              text: {
+                content: "Created Successfully!",
+                tag: "plain_text",
+              },
+            },
+            {
+              tag: "a",
+              href: "https://jira.motiong.net/browse/EV-1",
+              text: {
+                content: "Go to Jira",
+                tag: "plain_text",
+              },
+            },
+          ],
         },
       },
     });
-    return
+    return;
 
     await jira.addNewIssue({
       fields: {
@@ -47,8 +61,6 @@ export default async function handler(
           name: "Task",
         },
       },
-    })
-
-    
+    });
   }
 }
