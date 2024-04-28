@@ -23,11 +23,28 @@ export default async function handler(
 
     res.status(200).json({
       card: {
-        type: "template",
+        type: "raw",
         data: {
-          template_id: "AAqkhmJtZQdKF",
-          template_version_name: "1.0.2",
-        }
+          config: {
+            enable_forward: true,
+          },
+          elements: [
+            {
+              tag: "div",
+              text: {
+                content: "This is the plain text",
+                tag: "plain_text",
+              },
+            },
+          ],
+          header: {
+            template: "blue",
+            title: {
+              content: "This is the title",
+              tag: "plain_text",
+            },
+          },
+        },
       },
     });
     return;
