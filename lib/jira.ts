@@ -1,4 +1,4 @@
-import Jira from 'jira-client'
+import Jira from "jira-client";
 
 export const jira = new Jira({
   protocol: "https",
@@ -6,5 +6,11 @@ export const jira = new Jira({
   username: "eve-robot",
   password: "eve-robot",
   apiVersion: "2",
-  strictSSL: true
-})
+  strictSSL: true,
+});
+
+const a = {
+  summary: "test summary",
+  description: "test description",
+  assignee: { email: "test@email.com" },
+};

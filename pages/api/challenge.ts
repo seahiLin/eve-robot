@@ -21,6 +21,18 @@ export default async function handler(
 
     console.log(summary, description, email, "value change")
 
+    res.status(200).json({
+      toast: {
+        type: "success",
+        content: "创建1成功",
+        i18n: {
+          zh_cn: "创建1成功",
+          en_us: "Created successfully",
+        },
+      },
+    });
+    return
+
     await jira.addNewIssue({
       fields: {
         project: {
@@ -37,15 +49,6 @@ export default async function handler(
       },
     })
 
-    res.status(200).json({
-      toast: {
-        type: "success",
-        content: "创建1成功",
-        i18n: {
-          zh_cn: "创建1成功",
-          en_us: "Created successfully",
-        },
-      },
-    });
+    
   }
 }
