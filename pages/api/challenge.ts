@@ -26,12 +26,7 @@ export default async function handler(
         type: "template",
         data: {
           template_id: "AAqkhmJtZQdKF",
-          template_version_name: "1.0.01",
-          template_variable: {
-            "jira_url": {
-              url: "https://jira.motiong.net/browse/EV-1",
-            }
-          }
+          template_version_name: "1.0.2",
         }
       },
     });
