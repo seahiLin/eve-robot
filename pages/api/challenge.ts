@@ -23,7 +23,7 @@ export default async function handler(
 
     res.status(200).json({
       card: {
-        type: "raw",
+        type: "template",
         data: {
           config: {
             enable_forward: true,
@@ -44,6 +44,8 @@ export default async function handler(
               tag: "plain_text",
             },
           },
+          template_id: "AAqkhmJtZQdKF",
+          template_version_name: "1.0.2",
         },
       },
     });
