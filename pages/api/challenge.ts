@@ -17,7 +17,7 @@ export default async function handler(
       summary,
       description,
       assignee: { email },
-    } = JSON.parse(value);
+    } = JSON.parse(decodeURIComponent(value));
 
     console.log(summary, description, email, "value change")
 
