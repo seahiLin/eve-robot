@@ -25,27 +25,14 @@ export default async function handler(
       card: {
         type: "template",
         data: {
-          config: {
-            enable_forward: true,
-          },
-          elements: [
-            {
-              tag: "div",
-              text: {
-                content: "This is the plain text",
-                tag: "plain_text",
-              },
-            },
-          ],
-          header: {
-            template: "blue",
-            title: {
-              content: "This is the title",
-              tag: "plain_text",
-            },
-          },
           template_id: "AAqkhmJtZQdKF",
-          template_version_name: "1.0.2",
+          template_version_name: "1.0.3",
+          template_variables: {
+            pc_url: "https://jira.motiong.net/browse/EV-1",
+            android_url: "https://jira.motiong.net/browse/EV-1",
+            ios_url: "https://jira.motiong.net/browse/EV-1",
+            url: "https://jira.motiong.net/browse/EV-1",
+          },
         },
       },
     });
