@@ -28,10 +28,12 @@ export default async function handler(
           template_id: "AAqkhmJtZQdKF",
           template_version_name: "1.0.3",
           template_variables: {
-            pc_url: "https://jira.motiong.net/browse/EV-1",
-            android_url: "https://jira.motiong.net/browse/EV-1",
-            ios_url: "https://jira.motiong.net/browse/EV-1",
-            url: "https://jira.motiong.net/browse/EV-1",
+            jira_url: {
+              pc_url: "https://jira.motiong.net/browse/EV-1",
+              android_url: "https://jira.motiong.net/browse/EV-1",
+              ios_url: "https://jira.motiong.net/browse/EV-1",
+              url: "https://jira.motiong.net/browse/EV-1",
+            },
           },
         },
       },
