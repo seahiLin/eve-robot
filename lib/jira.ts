@@ -8,9 +8,3 @@ export const jira = new Jira({
   apiVersion: "2",
   strictSSL: true,
 });
-
-const a = {
-  summary: "test summary",
-  description: "test description",
-  assignee: { email: "test@email.com" },
-};

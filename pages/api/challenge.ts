@@ -23,26 +23,16 @@ export default async function handler(
 
     res.status(200).json({
       card: {
-        type: "raw",
+        type: "template",
         data: {
-          elements: [
-            {
-              tag: "div",
-              text: {
-                content: "Created Successfully!",
-                tag: "plain_text",
-              },
-            },
-            {
-              tag: "a",
-              href: "https://jira.motiong.net/browse/EV-1",
-              text: {
-                content: "Go to Jira",
-                tag: "plain_text",
-              },
-            },
-          ],
-        },
+          template_id: "AAqkhmJtZQdKF",
+          template_version_name: "1.0.0",
+          template_variable: {
+            "jira_url": {
+              url: "https://jira.motiong.net/browse/EV-1",
+            }
+          }
+        }
       },
     });
     return;
