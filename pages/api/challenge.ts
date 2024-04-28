@@ -27,7 +27,7 @@ export default async function handler(
         data: {
           template_id: "AAqkhmJtZQdKF",
           template_version_name: "1.0.3",
-          template_variables: {
+          template_variable: {
             jira_url: {
               pc_url: "https://jira.motiong.net/browse/EV-1",
               android_url: "https://jira.motiong.net/browse/EV-1",
