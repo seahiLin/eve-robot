@@ -16,10 +16,34 @@ export default async function handler(
     const {
       summary,
       description,
-      assignee: { email },
+      assignee_email,
+      reporter_email
     } = JSON.parse(decodeURIComponent(value));
 
-    console.log(summary, description, email, "value change");
+    console.log(summary, description, assignee_email, reporter_email, "value change");
+
+    const jiraRes = await jira.addNewIssue({
+      fields: {
+        project: {
+          key: "EV",
+        },
+        summary,
+        description,
+        reporter: {
+          name: reporter_email.split("@")[0],
+        },
+        assignee: {
+          name: assignee_email.split("@")[0],
+        },
+        issuetype: {
+          name: "Task",
+        },
+      },
+    });
+
+    const jiraUrl = `https://jira.motiong.net/browse/${jiraRes.key}`;
+
+    console.log(jiraUrl, "jiraUrl change")
 
     res.status(200).json({
       card: {
@@ -29,29 +53,12 @@ export default async function handler(
           template_version_name: "1.0.3",
           template_variable: {
             jira_url: {
-              pc_url: "https://jira.motiong.net/browse/EV-1",
-              android_url: "https://jira.motiong.net/browse/EV-1",
-              ios_url: "https://jira.motiong.net/browse/EV-1",
-              url: "https://jira.motiong.net/browse/EV-1",
+              pc_url: jiraUrl,
+              android_url: jiraUrl,
+              ios_url: jiraUrl,
+              url: jiraUrl,
             },
           },
-        },
-      },
-    });
-    return;
-
-    await jira.addNewIssue({
-      fields: {
-        project: {
-          key: "EV",
-        },
-        summary,
-        description,
-        assignee: {
-          name: email.split("@")[0],
-        },
-        issuetype: {
-          name: "Task",
         },
       },
     });
