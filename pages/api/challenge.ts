@@ -39,7 +39,10 @@ export default async function handler(
           name: "Task",
         },
       },
-    });
+    }).catch((err) => {
+      console.error(err, "err change");
+      return Promise.reject(err);
+    })
 
     const jiraUrl = `https://jira.motiong.net/browse/${jiraRes.key}`;
 
