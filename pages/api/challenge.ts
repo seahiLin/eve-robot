@@ -1,11 +1,11 @@
-import { jira } from "@/lib/jira";
+// pages/api/challenge.js
 import { NextApiRequest, NextApiResponse } from "next";
+import { jira } from "../../lib/jira";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.method, req.body, "req change");
   const { challenge, event, header } = req.body;
 
   if (challenge) {
@@ -19,8 +19,6 @@ export default async function handler(
       assignee_email,
       reporter_email
     } = JSON.parse(decodeURIComponent(value));
-
-    console.log(summary, description, assignee_email, reporter_email, "value change");
 
     const jiraRes = await jira.addNewIssue({
       fields: {
@@ -39,14 +37,9 @@ export default async function handler(
           name: "Task",
         },
       },
-    }).catch((err) => {
-      console.error(err, "err change");
-      return Promise.reject(err);
-    })
-
+    });
+    
     const jiraUrl = `https://jira.motiong.net/browse/${jiraRes.key}`;
-
-    console.log(jiraUrl, "jiraUrl change")
 
     res.status(200).json({
       card: {
@@ -65,5 +58,43 @@ export default async function handler(
         },
       },
     });
+  } else if (header.event.type === "p2p_chat_create") {
+    const { chat_id } = event;
+
+    console.log(chat_id, header, 'test seahi')
+
+    const { tenant_access_token } = await requestTenantAccessToken();
+    await fetch("https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tenant_access_token}`,
+      },
+      body: JSON.stringify({
+        "receive_id": chat_id,
+        "msg_type": "interactive",
+        "content": "{\"type\":\"template\",\"data\":{\"template_id\":\"AAqkICQ6WboIT\",\"template_version_name\":\"1.0.5\"}}"
+      }),
+    });
+
+    res.status(200).json({});
   }
+}
+
+function requestTenantAccessToken() {
+  return fetch(
+    "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        app_id: "cli_a57820d23a10d00d",
+        app_secret: "ZLdYvDCMWbcYYDkXe0FwxbZDIn5YnAdB",
+      }),
+    }
+  ).then((res) => {
+    return res.json();
+  });
 }
