@@ -59,7 +59,7 @@ export default async function handler(
         },
       },
     });
-  } else if (header.event.type === "p2p_chat_create") {
+  } else if (event.type === "p2p_chat_create") {
     const { chat_id } = event;
 
     console.log(chat_id, header, 'test seahi')
@@ -91,8 +91,8 @@ function requestTenantAccessToken() {
         "Content-Type": "application/json; charset=utf-8",
       },
       body: JSON.stringify({
-        app_id: "cli_a57820d23a10d00d",
-        app_secret: "ZLdYvDCMWbcYYDkXe0FwxbZDIn5YnAdB",
+        app_id: "cli_a6b2ff48387a500d",
+        app_secret: "MSMd1u4oj88TusihZAIJabQ1M4TylMsU",
       }),
     }
   ).then((res) => {
