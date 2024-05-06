@@ -7,6 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { challenge, event, header } = req.body;
+  console.log(event, header, 'test seahi total;')
 
   if (challenge) {
     res.status(200).json({ challenge });
