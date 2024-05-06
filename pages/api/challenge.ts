@@ -12,7 +12,7 @@ export default async function handler(
   if (challenge) {
     res.status(200).json({ challenge });
     return;
-  } else if (header.event_type === "card.action.trigger") {
+  } else if (header?.event_type === "card.action.trigger") {
     const { value } = event.action;
     const {
       summary,
