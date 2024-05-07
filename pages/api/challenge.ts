@@ -7,6 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { challenge, event, header } = req.body;
+  console.log(header, event, 'dsfjskla');
 
   if (challenge) {
     res.status(200).json({ challenge });
