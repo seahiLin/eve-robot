@@ -44,27 +44,27 @@ async function AddNewIssue(
 ) {
   const { epic_key, summary, description, assignee_email, reporter_email } =
     data;
-  const jiraRes = await jira.addNewIssue({
-    fields: {
-      project: {
-        key: "EV",
-      },
-      summary,
-      description,
-      reporter: {
-        name: reporter_email.split("@")[0],
-      },
-      assignee: {
-        name: assignee_email.split("@")[0],
-      },
-      issuetype: {
-        name: "Task",
-      },
-      customfield_10110: epic_key,
-    },
-  });
+  // const jiraRes = await jira.addNewIssue({
+  //   fields: {
+  //     project: {
+  //       key: "EV",
+  //     },
+  //     summary,
+  //     description,
+  //     reporter: {
+  //       name: reporter_email.split("@")[0],
+  //     },
+  //     assignee: {
+  //       name: assignee_email.split("@")[0],
+  //     },
+  //     issuetype: {
+  //       name: "Task",
+  //     },
+  //     customfield_10110: epic_key,
+  //   },
+  // });
 
-  const jiraUrl = `https://jira.motiong.net/browse/${jiraRes.key}`;
+  const jiraUrl = `https://jira.motiong.net/browse/EV-30`;
 
   res.status(200).json({
     card: {
