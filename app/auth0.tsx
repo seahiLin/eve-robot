@@ -12,7 +12,7 @@ export default function Auth0({
       domain="motiong.us.auth0.com"
       clientId="UCPBMzUz9SNbJUtOg0dD4iFgzhfqGiA6"
       authorizationParams={{
-        redirect_uri: window.location.origin,
+        redirect_uri: typeof window !== 'undefined' ? window.location.origin : '',
       }}
     >
       {children}
