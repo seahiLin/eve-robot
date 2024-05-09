@@ -33,7 +33,7 @@ export default async function handler(
         body: JSON.stringify({
           receive_id: chat_id,
           msg_type: "text",
-          content: `{\"text\":\"<at user_id=\\\"${user_id}\\\"></at> i see you\"}`,
+          content:  "{\"text\":\"test content\"}"
         }),
       }
     );
