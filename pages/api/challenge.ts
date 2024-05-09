@@ -19,7 +19,7 @@ export default async function handler(
       },
     } = event;
 
-    console.log(event, 'event')
+    console.log(event, `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> i see you\"}`, 'event')
 
     const { tenant_access_token } = await requestTenantAccessToken();
     await fetch(
@@ -33,7 +33,7 @@ export default async function handler(
         body: JSON.stringify({
           receive_id: chat_id,
           msg_type: "text",
-          content:  "{\"text\":\"test content\"}"
+          content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> i see you\"}`
         }),
       }
     );

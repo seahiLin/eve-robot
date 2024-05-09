@@ -10,6 +10,7 @@
     "dev:docker": "docker build --build-arg ENVIRONMENT=PROD -t nextjs-docker . && docker run -p 3000:3000 nextjs-docker"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "jira-client": "^8.2.2",
     "next": "14.2.2",
     "react": "^18",
