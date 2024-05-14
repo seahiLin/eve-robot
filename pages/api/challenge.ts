@@ -48,44 +48,41 @@ export default async function handler(
     }
 
     console.log("queryStr: ", queryStr);
-    setImmediate(() => {
-      fetch("https://api.rag.eve.platform.motiong.com/rag/v1/ask_query", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: queryStr,
-        }),
-      })
-        .then((res) => res.json())
-        .then(async (ragResult) => {
-          console.log("ragResult: ", ragResult);
-          if (ragResult.code === 0) {
-            const { tenant_access_token } = await requestTenantAccessToken();
-            fetch(
-              "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${tenant_access_token}`,
-                },
-                body: JSON.stringify({
-                  receive_id: chat_id,
-                  msg_type: "text",
-                  content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> ${ragResult.data.response}\"}`,
-                }),
-              }
-            );
+
+    const ragResult = await fetch("https://api.rag.eve.platform.motiong.com/rag/v1/ask_query", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: queryStr,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log("err: ", err);
+        res.status(200).json({});
+        return Promise.reject(err);
+      });
+
+      if (ragResult.code === 0) {
+        const { tenant_access_token } = await requestTenantAccessToken();
+        fetch(
+          "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${tenant_access_token}`,
+            },
+            body: JSON.stringify({
+              receive_id: chat_id,
+              msg_type: "text",
+              content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> ${ragResult.data.response}\"}`,
+            }),
           }
-        })
-        .catch((err) => {
-          res.status(200).json({});
-          console.log("err: ", err);
-          return Promise.reject(err);
-        });
-    });
+        );
+      }
 
     res.status(200).json({});
     return;
