@@ -59,9 +59,10 @@ export default async function handler(
         return Promise.reject(err);
       });
 
+      console.log("ragResult: ", ragResult);
     if (ragResult.code === 0) {
       const { tenant_access_token } = await requestTenantAccessToken();
-      await fetch(
+      fetch(
         "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id",
         {
           method: "POST",
