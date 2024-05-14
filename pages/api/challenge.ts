@@ -21,24 +21,6 @@ export default async function handler(
 
     console.log(mentions[0], "mentions");
 
-    setTimeout(async () => {
-      const { tenant_access_token } = await requestTenantAccessToken();
-      fetch(
-        "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tenant_access_token}`,
-          },
-          body: JSON.stringify({
-            receive_id: chat_id,
-            msg_type: "text",
-            content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> test info\"}`,
-          }),
-        }
-      );
-    }, 1000);
     const jsonContent = JSON.parse(content);
 
     let queryStr = "";
