@@ -19,6 +19,7 @@ export default async function handler(
       },
     } = event;
 
+
     const jsonContent = JSON.parse(content);
     let queryStr = "";
     if (jsonContent.text) {
@@ -54,7 +55,7 @@ export default async function handler(
     )
       .then((res) => res.json())
       .catch((err) => {
-        res.status(200);
+        res.status(200).json({});
         console.log("err: ", err);
         return Promise.reject(err);
       });
@@ -79,7 +80,7 @@ export default async function handler(
       );
     }
 
-    res.status(200);
+    res.status(200).json({});
     return;
   }
 }
