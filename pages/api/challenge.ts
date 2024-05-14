@@ -21,6 +21,9 @@ export default async function handler(
 
     console.log(mentions, 'mentions')
     const jsonContent = JSON.parse(content);
+
+    res.status(200).json({})
+    
     let queryStr = "";
     if (jsonContent.text) {
       queryStr = jsonContent.text;
@@ -36,7 +39,6 @@ export default async function handler(
       }, []);
       queryStr = textValues.filter((t: string) => t).join(", ");
     } else {
-      res.status(200).json({})
       return;
     }
 
@@ -55,7 +57,6 @@ export default async function handler(
     )
       .then((res) => res.json())
       .catch((err) => {
-        res.status(200).json({});
         console.log("err: ", err);
         return Promise.reject(err);
       });
@@ -79,8 +80,7 @@ export default async function handler(
         }
       );
     }
-
-    res.status(200).json({});
+    
     return;
   }
 }
