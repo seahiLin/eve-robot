@@ -49,14 +49,6 @@ export default async function handler(
       body: JSON.stringify({
         query: queryStr,
       }),
-    }).then((res) => res.json()).catch((err) => {
-      console.log(err, 'err')
-      return {
-        code: 0,
-        data: {
-          response: "Sorry, I am not able to answer your question right now. Please try again later.",
-        }
-      }
     })
     
     if (ragResult.code === 0) {
