@@ -12,7 +12,6 @@ export default async function handler(
     res.status(200).json({ challenge });
     return;
   } else if (header?.event_type === "im.message.receive_v1") {
-
     const {
       message: { chat_id, content },
       sender: {
@@ -25,32 +24,41 @@ export default async function handler(
     if (jsonContent.text) {
       queryStr = jsonContent.text;
     } else if (jsonContent.content?.length) {
-      queryStr = jsonContent.content.map((item: {
+      const textValues = jsonContent.content.reduce((acc: string[], curr: {
         tag: string;
-        text: string
-      }) => {
-        if (item.tag === 'text') {
-          return item.text;
-        }
-
-        return null
-      }).filter((t: string | null) => t).join(", ");
+        text?: string;
+      }[]) => {
+        const textNodes = curr
+          .filter((item) => item.tag === "text")
+          .map((item) => item.text || '');
+        return acc.concat(textNodes);
+      }, []);
+      queryStr = textValues.filter((t: string) => t).join(", ");
     } else {
       res.status(200);
       return;
     }
 
-    console.log("queryStr: ", queryStr)
-    const ragResult = await fetch("https://api.rag.eve.platform.motiong.com/rag/v1/ask_query", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: queryStr,
-      }),
-    })
-    
+    console.log("queryStr: ", queryStr);
+    const ragResult = await fetch(
+      "https://api.rag.eve.platform.motiong.com/rag/v1/ask_query",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: queryStr,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        res.status(200);
+        console.log("err: ", err);
+        return Promise.reject(err);
+      });
+
     if (ragResult.code === 0) {
       const { tenant_access_token } = await requestTenantAccessToken();
       await fetch(
@@ -64,7 +72,7 @@ export default async function handler(
           body: JSON.stringify({
             receive_id: chat_id,
             msg_type: "text",
-            content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> ${ragResult.data.response}\"}`
+            content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> ${ragResult.data.response}\"}`,
           }),
         }
       );
