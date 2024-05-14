@@ -6,12 +6,13 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { challenge, event, header } = req.body;
-  console.log(header, "header");
+  console.log(header, event, "header");
 
   if (challenge) {
     res.status(200).json({ challenge });
     return;
   } else if (header?.event_type === "im.message.receive_v1") {
+
     const {
       message: { chat_id, content },
       sender: {
@@ -19,26 +20,65 @@ export default async function handler(
       },
     } = event;
 
-    console.log(event, `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> i see you\"}`, 'event')
+    const jsonContent = JSON.parse(content);
+    let queryStr = "";
+    if (jsonContent.text) {
+      queryStr = jsonContent.text;
+    } else if (jsonContent.content?.length) {
+      queryStr = jsonContent.content.map((item: {
+        tag: string;
+        text: string
+      }) => {
+        if (item.tag === 'text') {
+          return item.text;
+        }
 
-    const { tenant_access_token } = await requestTenantAccessToken();
-    await fetch(
-      "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tenant_access_token}`,
-        },
-        body: JSON.stringify({
-          receive_id: chat_id,
-          msg_type: "text",
-          content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> i see you\"}`
-        }),
+        return null
+      }).filter((t: string | null) => t).join(", ");
+    } else {
+      res.status(200);
+      return;
+    }
+
+    console.log("queryStr: ", queryStr)
+    const ragResult = await fetch("https://api.rag.eve.platform.motiong.com/rag/v1/ask_query", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: queryStr,
+      }),
+    }).then((res) => res.json()).catch((err) => {
+      console.log(err, 'err')
+      return {
+        code: 0,
+        data: {
+          response: "Sorry, I am not able to answer your question right now. Please try again later.",
+        }
       }
-    );
+    })
+    
+    if (ragResult.code === 0) {
+      const { tenant_access_token } = await requestTenantAccessToken();
+      await fetch(
+        "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tenant_access_token}`,
+          },
+          body: JSON.stringify({
+            receive_id: chat_id,
+            msg_type: "text",
+            content: `{\"text\":\"<at user_id=\\\"${user_id}\\\">you</at> ${ragResult.data.response}\"}`
+          }),
+        }
+      );
+    }
 
-    res.status(200).json({ challenge: "success" });
+    res.status(200);
     return;
   }
 }
