@@ -35,7 +35,7 @@ export default async function handler(
       }, []);
       queryStr = textValues.filter((t: string) => t).join(", ");
     } else {
-      res.status(200);
+      res.status(200).json({})
       return;
     }
 
