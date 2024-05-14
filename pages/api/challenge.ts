@@ -13,13 +13,13 @@ export default async function handler(
     return;
   } else if (header?.event_type === "im.message.receive_v1") {
     const {
-      message: { chat_id, content },
+      message: { chat_id, content, mentions },
       sender: {
         sender_id: { user_id },
       },
     } = event;
 
-
+    console.log(mentions, 'mentions')
     const jsonContent = JSON.parse(content);
     let queryStr = "";
     if (jsonContent.text) {
