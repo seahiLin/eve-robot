@@ -14,7 +14,7 @@ export default async function handler(
     return;
   } else if (header?.event_type === "im.message.receive_v1") {
     const {
-      message: { message_id, chat_type, content, mentions },
+      message: { chat_id, chat_type, content, mentions },
       sender: {
         sender_id: { user_id },
       },
@@ -31,7 +31,7 @@ export default async function handler(
             mention?.id?.user_id === ""
         ))
     ) {
-      handleMessage(content, message_id, user_id);
+      handleMessage(content, chat_id, user_id);
     }
 
     res.status(200).json({});
@@ -41,7 +41,7 @@ export default async function handler(
 
 async function handleMessage(
   content: any,
-  message_id: string,
+  chat_id: string,
   user_id: string
 ) {
   const jsonContent = JSON.parse(content);
@@ -83,13 +83,14 @@ async function handleMessage(
   }
 
   const { tenant_access_token } = await requestTenantAccessToken();
-  fetch(`https://open.feishu.cn/open-apis/im/v1/messages/${message_id}/reply`, {
+  fetch(`https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${tenant_access_token}`,
     },
     body: JSON.stringify({
+      receive_id: chat_id,
       msg_type: "post",
       content: JSON.stringify({
         zh_cn: {
@@ -97,7 +98,7 @@ async function handleMessage(
             [
               {
                 tag: "text",
-                text: result.text,
+                text: `<at user_id=${user_id}>you</at> ${result.text}`,
               },
             ],
             [
@@ -111,13 +112,14 @@ async function handleMessage(
       })
     }),
   });
-  fetch(`https://open.feishu.cn/open-apis/im/v1/messages/${message_id}/reply`, {
+  fetch(`https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${tenant_access_token}`,
     },
     body: JSON.stringify({
+      receive_id: chat_id,
       msg_type: "file",
       content: JSON.stringify({
         file_key: result.attachments[0].file_key,
