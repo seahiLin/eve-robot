@@ -75,6 +75,7 @@ async function handleMessage(
       {
         file_key: "file_v3_00as_70b94316-7832-4ac1-8185-526c92bc881g",
         file_name: "产品-柔性 1 (1) (1).png",
+        file_link: "http://motiong-eve.oss-cn-hangzhou.aliyuncs.com/Phase%201%20Plan%20-%20Opportunity%20Statements%20-%20Motion%20G%20Engineering%20AI%20-%2028032024.pdf",
       },
       {
         fil_key: "img_v3_02as_7e283f0e-aa06-43bf-b3d0-4fe6c526d36g",
@@ -101,28 +102,25 @@ async function handleMessage(
                 text: `<at user_id=${user_id}>you</at> ${result.text}`,
               },
             ],
-            [
-              {
-                tag: "img",
-                image_key: result.attachments[1].file_key,
-              }
-            ]
+            ...result.attachments.map((attachment: any) => {
+              if (attachment.file_key.startsWith("file")) {
+                return {
+                  tag: "a",
+                  text: attachment.file_name,
+                  href: {
+                    url: attachment.file_link,
+                  },
+                };
+              } 
+              // else if (attachment.file_key.startsWith("img")) {
+              //   return {
+              //     tag: "img",
+              //     img_key: attachment.file_key,
+              //   };
+              // }
+            })
           ]
         }
-      })
-    }),
-  });
-  fetch(`https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${tenant_access_token}`,
-    },
-    body: JSON.stringify({
-      receive_id: chat_id,
-      msg_type: "file",
-      content: JSON.stringify({
-        file_key: result.attachments[0].file_key,
       })
     }),
   });
