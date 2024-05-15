@@ -78,7 +78,7 @@ async function handleMessage(
         file_link: "http://motiong-eve.oss-cn-hangzhou.aliyuncs.com/Phase%201%20Plan%20-%20Opportunity%20Statements%20-%20Motion%20G%20Engineering%20AI%20-%2028032024.pdf",
       },
       {
-        fil_key: "img_v3_02as_7e283f0e-aa06-43bf-b3d0-4fe6c526d36g",
+        file_key: "img_v3_02as_7e283f0e-aa06-43bf-b3d0-4fe6c526d36g",
       }
     ],
   }
